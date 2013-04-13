@@ -1,0 +1,224 @@
+Analyse des RPU 2012 (version linux)
+========================================================
+
+Ce document exploite le fichier RData préparé à partir de la table RPU__ de Sagec. Voir le document *RPU2012_Prepa.Rmd* du sossier Resural.
+
+Pour que les légendes de l'axe des Y soient perpendiculaires a ce dernier, rajouter *las = 1*
+Pour que les légendes de l'axe des X soient perpendiculaires a ce dernier, rajouter *las = 2*
+Pour que les légendes soient perpendiculaires aux 2 axes, rajouter *las = 3*
+Par défaut *las = 0*
+
+Initialisation
+==============
+Définir le working directory:
+```{r}
+setwd("~/Documents/Resural/Stat Resural/RPU_2012")
+```
+Mise à jour:
+```{r}
+date()
+# A NE FAIRE QU'UNE FOIS AU DEBUT DE LA SESSION:
+# loadhistory(file = ".Rhistory")
+# timestamp()
+# A FAIRE SI ON CHANGE DE WORKING DIRECTORY
+# sauvegarde: savehistory(file = ".Rhistory")
+```
+Packages nécessaires
+--------------------
+gdata est utile pour la méthode drop.levels() qui supprime les levels inutiles:
+(ref: http://rwiki.sciviews.org/doku.php?id=tips:data-manip:drop_unused_levels)
+```{r}
+library("gdata", lib.loc="/home/jcb/R/x86_64-pc-linux-gnu-library/2.15")
+library("rgrs")
+library("lubridate")
+```
+
+Lecture du fichier des données
+---------------------------------------
+On lit le fichier de travail créé:
+```{r-Lecture fichier}
+load("rpu2012.Rda")
+```
+detach(d1)
+attach(d1)
+
+Chargement des routines perso
+=============================
+```{r}
+source("mes_fonctions.R")
+```
+
+
+Analyse des données
+===================
+```{r}
+n<-dim(d1)
+print(n)
+print(names(d1))
+str(d1)
+summary(d1)
+```
+Stuctures hospitalières participantes
+=====================================
+```{r}
+summary(d1$FINESS)
+a<-table(d1$FINESS)
+round(prop.table(a)*100,digits=2)
+```
+### Origine temporelle des données:
+```{r}
+b<-tapply(d1$ENTREE,d1$FINESS,min)
+as.Date(b,origin="1970-01-01")
+```
+
+
+Exhaustivité des données
+------------------------
+```{r}
+a<-is.na(d1)
+b<-apply(a,2,mean)
+round(b,digits=2)
+```
+
+Analyse univariée
+=================
+Sexe
+----
+```{r}
+print(summary(d1$SEXE))
+```
+sexratio:
+```{r}
+t<-table(d1$SEXE)
+print(paste(round(t[1]/t[3],digits=2),"%"))
+```
+Age
+---
+```{r}
+summary(d1$AGE)
+
+age0<-length(d1[d1$AGE < 1,"AGE"])
+age75<-length(d1[d1$AGE > 75,"AGE"])
+age1_75<-length(d1[d1$AGE > 0 & d1$AGE < 76,"AGE"])
+effectif<-c(age0,age1_75,age75)
+pourcentage<-round(pop*100/sum(pop),2)
+t<-data.frame(effectif,pourcentage,row.names=c("moins de 1 an","de 1 à 75 ans","plus de 75 ans"))
+```
+Gravité
+-------
+```{r}
+table(d1$GRAVITE,useNA="ifany")
+freq(d1$GRAVITE)
+plot(table(d1$GRAVITE,useNA="ifany"),xlab="Gravité (CCMU)",ylab="Effectifs",main="CCMU")
+```
+
+
+Destination
+-----------
+```{r}
+table(d1$DESTINATION,useNA="ifany")
+freq(d1$DESTINATION)
+plot(table(d1$DESTINATION,useNA="ifany"),xlab="Services",ylab="Effectifs",main="Orientation des patients")
+```
+FINESS
+------
+```{r}
+t<-table(d1$FINESS,useNA="ifany")
+t
+round(prop.table(t)*100,2)
+freq(d1$FINESS)
+plot(table(d1$FINESS,useNA="ifany"),xlab="Etablissements",ylab="Effectifs",main="Etablissements sièges de SU")
+```
+Mode d'entrée
+-------------
+```{r}
+table(d1$MODE_ENTREE,useNA="ifany")
+freq(d1$MODE_ENTREE)
+plot(table(d1$MODE_ENTREE,useNA="ifany"),xlab="Mode d'entée",ylab="Effectifs",main="")
+```
+Mode de sortie
+--------------
+```{r}
+table(d1$MODE_SORTIE,useNA="ifany")
+freq(d1$MODE_SORTIE)
+plot(table(d1$MODE_SORTIE,useNA="ifany"),xlab="Mode de sortie",ylab="Effectifs",main="")
+```
+Orientation
+-----------
+```{r}
+table(d1$ORIENTATION,useNA="ifany")
+freq(d1$ORIENTATION)
+plot(table(d1$ORIENTATION,useNA="ifany"),xlab="Orientation",ylab="Effectifs",main="")
+```
+Provenance
+----------
+```{r}
+table(d1$PROVENANCE,useNA="ifany")
+freq(d1$PROVENANCE)
+plot(table(d1$PROVENANCE,useNA="ifany"),xlab="Provenance",ylab="Effectifs",main="")
+```
+Transport
+---------
+```{r}
+table(d1$TRANSPORT,useNA="ifany")
+freq(d1$TRANSPORT)
+plot(table(d1$TRANSPORT,useNA="ifany"),xlab="Mode de transport",ylab="Effectifs",main="")
+```
+Prise en charge
+---------------
+```{r}
+table(d1$TRANSPORT_PEC,useNA="ifany")
+freq(d1$TRANSPORT_PEC)
+plot(table(d1$TRANSPORT_PEC,useNA="ifany"),xlab="Prise en charge pendant le transport",ylab="Effectifs",main="")
+```
+
+
+Analyse bivariée
+================
+
+### Age et sexe
+```{r}
+boxplot(d1$AGE~d1$SEXE,ylab="Age (années)",xlab="Sexe",las=2)
+```
+Age et Gravité
+--------------
+```{r}
+boxplot(d1$AGE~d1$GRAVITE,xlab="Gravité exprimée en échelle CCMU",ylab="Age (années)",main="Age et Gravité")
+```
+Age et FINESS
+-------------
+Les HUS ont une patientèle plus agée que la moyenne:       
+```{r}
+boxplot(d1$AGE~d1$FINESS,xlab="Etablissement",ylab="Age (années)") 
+round(tapply(d1$AGE,d1$FINESS,mean,na.rm=TRUE),2)
+```
+Age et établissement
+--------------------
+```{r}
+boxplot(d1$AGE~d1$FINESS,ylab="Age (années)",xlab="Etablissement",main="Age des patients selon l'établissement")
+```
+FINESS
+======
+### FINESS et GRAVITE
+```{r}
+plot(d1$FINESS~d1$GRAVITE,ylab="Etablissement",xlab="Gravité (CCMU)")
+a<-table(d1$FINESS,d1$GRAVITE)
+addmargins(a)
+round(prop.table(a)*100,digit=2)
+```
+Gavité et établissement: les fréquences sont exprimées en pourcentage. La somme de chaque ligne est égale à 100%.
+```{r}
+addmargins(round(prop.table(a,margin=1)*100,digit=2),margin=2)
+```
+Avec code de couleur:
+```{r}
+plot(d1$FINESS~d1$GRAVITE,ylab="Etablissement",xlab="Gravité (CCMU)",col=terrain.colors(n=9))
+```
+Même calcul en supprimant Hag et Alk dont la contribution est négligeable:
+(nécessite le package gdata)
+```{r}
+d2<-d1[d1$FINESS!="Hag" & d1$FINESS!="Alk",c(8,9)]
+d2$FINESS<-drop.levels(d2$FINESS)
+summary(d2$FINESS)
+plot(d2$FINESS~d2$GRAVITE,ylab="Etablissement",xlab="Gravité (CCMU)",col=terrain.colors(n=7))
+```

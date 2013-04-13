@@ -1,0 +1,119 @@
+RPU2012-prepa
+========================================================
+
+Ce document explique comment préparer les données RPU 2012 brutes, c'est à dire depuis l'extraction de la base de donnée SAGEC jusqu'à la production d'un fichier R pépondant à la norme tidy.
+
+Initialisation
+==============
+Définir le working directory:
+```{r}
+setwd("~/Documents/Resural/Stat Resural/RPU_2012")
+```
+Mise à jour:
+```{r}
+date()
+```
+
+etape 1
+-------
+Cette étape permet de récupérer les données à partir de la table *rpu* de la base de données *pma*. A l'issue, un fichier de travail *rpu2012_2.txt* esr créé. Si ce fichier a déjà été créé, passer directement à l'étape 4.
+
+Chargement des library nécessaires:
+```{r}
+library("RMySQL", lib.loc="/usr/lib/R/site-library")
+library("rgrs")
+
+```
+Création d'un connecteur:
+```{r}
+con<-dbConnect(MySQL(),group = "pma") 
+```
+Liste des tables de la base *pma*
+```{r}
+dbListTables(con)
+```
+Liste des champs de la table *rpu__*
+```{r}
+dbListFields(con,"RPU__")
+```
+Lecture des enregistrements de la table compris entre le 1er janvier et le 31 décembre 2012 (cette étape peu être longue):
+```{r}
+rs<-dbSendQuery(con,"SELECT * FROM RPU__ WHERE ENTREE BETWEEN '2012-01-01' AND '2013-01-01' ")
+d1<-fetch(rs,n=-1,encoding = "UTF-8")
+```
+
+etape 2: nettoyage des données
+------------------------------
+Suppression de la colonne 16, intitulée RAW. Cette colonne a été rajoutée par mr Nold pour stocker le RPU tel que fournit par le SAU:
+```{r}
+d1<-d1[,-16]
+```
+d1 est le dataframe par défaut:
+```{r}
+attach(d1)
+```
+création de finess unique pour un établissement par transformation du finess juridique en finess geographique
+```{r}
+a<-FINESS
+a[a=="670780543"]<-"670000272" # Wissembourg
+a[a=="680000973"]<-"680000684" # Colmar
+b<-c(670000272,670000397,670016237,670780055,670780337,670780543,680000197,680000486,680000684,680000700,680000973)
+c<-as.character(b)
+```
+on supprime les finess juridiques
+```{r}
+c<-c[c(-6,-11)]
+d<-c("Wis","Sel","Odi","Hus","Hag","3Fr","Alk","Col","Geb")
+b<-factor(a,levels=c,labels=d)
+d1$FINESS<-b
+rm(b)
+rm(a)
+```
+Transformation en facteur:
+```{r}
+d1$CODE_POSTAL<-as.factor(CODE_POSTAL)
+d1$COMMUNE<-as.factor(COMMUNE)
+d1$SEXE<-as.factor(SEXE)
+d1$TRANSPORT<-as.factor(TRANSPORT)
+d1$TRANSPORT_PEC<-as.factor(TRANSPORT_PEC)
+d1$GRAVITE<-as.factor(GRAVITE)
+d1$ORIENTATION<-as.factor(ORIENTATION)
+```
+Transformation en DATE:
+```{r}
+d1$NAISSANCE<-as.Date(NAISSANCE)
+d1$ENTREE<-as.Date(ENTREE)
+d1$SORTIE<-as.Date(SORTIE)
+```
+Création de facteurs
+```{r}
+d1$MODE_ENTREE<-factor(MODE_ENTREE,levels=c(0,6,7,8),labels=c('NA','Mutation','Transfert','Domicile'))
+d1$PROVENANCE<-factor(PROVENANCE,levels=c(0,1,2,3,4,5,8),labels=c('NA','MCO','SSR','SLD','PSY','PEA','PEO'))
+d1$MODE_SORTIE<-factor(MODE_SORTIE,levels=c(0,6,7,8,4),labels=c('NA','Mutation','Transfert','Domicile','Décès'))
+d1$DESTINATION<-factor(DESTINATION,levels=c(0,1,2,3,4,6,7),labels=c('NA','MCO','SSR','SLD','PSY','HAD','HMS'))
+```
+Création d'une variable AGE:
+```{r-age1}
+d1$AGE<-floor(as.numeric(d1$ENTREE-d1$NAISSANCE)/365)
+```
+Deux patients ont des ages extrêmes: 118 et 129 ans => on les élimine:
+```{r-age2}
+d1$AGE[d1$AGE > 115]<-NA
+```
+
+etape 3: sauvegarde des données nettoyées
+```{r-sauvegarde}
+# write.table(d1,"rpu2012_2.txt",sep=',',quote=TRUE,na="NA")
+save(d1,file="rpu2012.Rda")
+# load("rpu2012.Rda")
+```
+
+étape 4: lecture du fichier des données
+---------------------------------------
+*nb: neutralisé pour l'instant car erreur de lecture du fichier*
+On lit le fichier de travail créé:
+```{r-Lecture fichier}
+# d1<-read.table("rpu2012_2.txt",sep=',')
+```
+detach(d1)
+attach(d1)
