@@ -28,7 +28,7 @@ Packages nécessaires
 gdata est utile pour la méthode drop.levels() qui supprime les levels inutiles:
 (ref: http://rwiki.sciviews.org/doku.php?id=tips:data-manip:drop_unused_levels)
 ```{r}
-library("gdata", lib.loc="/home/jcb/R/x86_64-pc-linux-gnu-library/2.15")
+library("gdata")
 library("rgrs")
 library("lubridate")
 ```
