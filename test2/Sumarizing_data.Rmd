@@ -1,6 +1,8 @@
 Summarizing Data in R
 ========================================================
 
+source: http://mathewanalytics.wordpress.com/2013/04/11/summarizing-data-in-r-using-plyr-and-reshape/
+
 When work with large amounts of data that is structured in a tabular format, a common operation is to summarize that data in different ways using specific variables. In Microsoft Excel, pivot tables are a nice feature that is used for this purpose. Of course, R also has similar calculations that can be used to summarize large amount of data. In the following R code, I utilizeR to summarize a data frame by specific variables.
 
 ## DATA
