@@ -1,0 +1,74 @@
+\documentclass[a4paper,8pt]{article}
+\usepackage[utf8x]{inputenc}
+
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{rotating}
+\usepackage[top=1cm, bottom=2cm]{geometry}
+\usepackage{multicol}
+
+%opening
+\title{}
+\author{}
+
+\begin{document}
+
+\maketitle
+
+\section{}
+
+\begin{table}[htbp]
+\caption{Liste structures hospitalières ayant une activité d'urgence}
+\begin{turn}{90}
+\begin{tabular}{|l|c|l|l|l|l|}
+\hline
+\textbf{Ter. de santé} & \textbf{Territoire de proximité} & \textbf{Structures urgence} & \textbf{Services hospitaliers} & \textbf{SAMU-SMUR} & \textbf{Autres} \\ \hline
+\multicolumn{ 1}{|c|}{1} & \multicolumn{ 1}{c|}{Wissembourg} & \multicolumn{ 1}{l|}{CH Wissembourg} & mixte &  &  \\ \cline{ 4- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  & SMUR &  \\ \cline{ 2- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{Haguenau} & \multicolumn{ 1}{l|}{CH Haguenau} & adulte et traumato pédiatrique &  & USIC \\ \cline{ 4- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} & pédiatrie médicale &  & Salle d'Ac \\ \cline{ 4- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  & SMUR & (UNV) \\ \cline{ 4- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  &  & Réanimation polyvalente \\ \cline{ 3- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{} &  &  &  & Clinique Saint-François (Main) \\ \cline{ 2- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{Saverne} & \multicolumn{ 1}{l|}{CH Saverne} & adulte et traumato pédiatrique &  & Salle d'Ac \\ \cline{ 4- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} & pédiatrie médicale &  & Réanimation polyvalente \\ \cline{ 4- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  & SMUR &  \\ \hline
+\multicolumn{ 1}{|c|}{2} & Molsheim-Schirmeck &  &  &  & Clinique Saint-Luc (policlinique) \\ \cline{ 2- 6}
+\multicolumn{ 1}{|c|}{} & \multicolumn{ 1}{c|}{Strasbourg} & \multicolumn{ 1}{l|}{CHU} & NHC Adultes &  & USIC \\ \cline{ 4- 6}
+\multicolumn{ 1}{|c|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  &  & Réanimation chirurgicale polyvalente \\ \cline{ 4- 6}
+\multicolumn{ 1}{|c|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  &  & Réanimation chirurgicale thoracique \\ \cline{ 4- 6}
+\multicolumn{ 1}{|c|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  &  & Réanimation médicale polyvalente \\ \cline{ 4- 6}
+\multicolumn{ 1}{|c|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} & HTP Adultes &  & UNV \\ \cline{ 4- 6}
+\multicolumn{ 1}{|c|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  &  & Réanimation chirurgicale polyvalente \\ \cline{ 4- 6}
+\multicolumn{ 1}{|c|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  &  & Réanimation médicale polyvalente \\ \cline{ 4- 6}
+\multicolumn{ 1}{|c|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  &  & Urgences gynéco-obstétricales \\ \cline{ 4- 6}
+\multicolumn{ 1}{|c|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} & HTP Pédiatrie &  & Réanimation pédiatrique \\ \cline{ 4- 6}
+\multicolumn{ 1}{|c|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  & SAMU-SMUR &  \\ \cline{ 3- 6}
+\multicolumn{ 1}{|c|}{} & \multicolumn{ 1}{c|}{} & Sainte-Odile & mixte &  &  \\ \cline{ 3- 6}
+\multicolumn{ 1}{|c|}{} & \multicolumn{ 1}{c|}{} & Sainte-Anne & mixte &  &  \\ \hline
+\multicolumn{ 1}{|c|}{3} & \multicolumn{ 1}{c|}{Obernai-Sélestat} & \multicolumn{ 1}{l|}{CH Sélestat} & mixte &  & Salle d'Ac \\ \cline{ 4- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  & SMUR & Réanimation polyvalente \\ \cline{ 2- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{Colmar} & \multicolumn{ 1}{l|}{CH Colmar} & adulte et traumato pédiatrique &  & Réanimation chirurgicale polyvalente \\ \cline{ 4- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} & pédiatrie médicale &  & Réanimation médicale polyvalente \\ \cline{ 4- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  & SMUR & CHMA (USIC) \\ \cline{ 2- 6}
+\multicolumn{ 1}{|l|}{} & Guebwiller & CH Guebwiller & mixte &  &  \\ \hline
+\multicolumn{ 1}{|c|}{4} & Thann & CH Thann & mixte &  &  \\ \cline{ 2- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{Mulhouse} & \multicolumn{ 1}{l|}{CH Mulhouse} & mixte &  & Réanimation chirurgicale polyvalente \\ \cline{ 4- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{} & \multicolumn{ 1}{l|}{} &  & SAMU-SMUR & Réanimation médicale polyvalente \\ \cline{ 3- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{} & Clinique du Diaconnat-Fonderie & mixte &  & USIC \\ \cline{ 2- 6}
+\multicolumn{ 1}{|l|}{} & Altkirch & CH Altkirch & mixte &  &  \\ \cline{ 2- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{Saint-Louis} & Clinique des 3 Frontières & mixte &  &  \\ \cline{ 3- 6}
+\multicolumn{ 1}{|l|}{} & \multicolumn{ 1}{c|}{} &  &  & Antenne SMUR &  \\ \hline
+\end{tabular}
+\end{turn}
+\label{table_urgence}
+\end{table}
+
+\begin{multicols}{2}
+  Du texte très intéressant qui doit
+  être mis sur deux colonnes.
+  \ldots
+\end{multicols}
+
+\end{document}

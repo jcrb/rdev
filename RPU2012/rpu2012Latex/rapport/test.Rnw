@@ -1,0 +1,37 @@
+\subsection{Test}
+
+Ceci est un test.
+\subsection{Age des patients}
+
+<<label=tab3,echo=FALSE,results=tex>>=
+a<-summary(d1$AGE)
+b<-summary(d1$AGE[d1$SEXE=="M"])
+c<-summary(d1$AGE[d1$SEXE=="F"])
+@
+
+\begin{itemize}
+  \item Age moyen pour l'ensemble \Sexpr{a[4]} ans.
+  \item Age moyen pour les hommes \Sexpr{b[4]} ans.
+  \item Age moyen pour les femmes \Sexpr{c[4]} ans. 
+\end{itemize}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+  \hline
+   \emph{Age} & Min & Max & Moyenne & Médiane \\
+    \hline
+    \hline
+    Hommes & $\Sexpr{b[1]}$ & \Sexpr{b[6]} & $\Sexpr{b[4]}$ & \Sexpr{b[3]} \\
+    \hline
+    Femmes & \Sexpr{c[1]} & \Sexpr{c[6]} & \Sexpr{c[4]} & \Sexpr{c[3]} \\
+    \hline
+    \emph{total} & \Sexpr{a[1]} & \Sexpr{a[6]} & \Sexpr{a[4]} & \Sexpr{a[3]} \\
+  \hline
+\end{tabular}
+\caption{Age de l'ensemble des patients}
+\label{summary}
+\end{center}
+\end{table}
+
+Les caractéristiques de la population sont résumées dans la table \ref{summary}, page \pageref{summary}.

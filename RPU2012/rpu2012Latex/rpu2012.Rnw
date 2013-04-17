@@ -1,0 +1,19 @@
+\documentclass{article}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+<<>>=
+setwd("~/Documents/Resural/Stat Resural/RPU_2012")
+a<-1
+getwd()
+@
+setwd("~/Documents/Resural/Stat Resural/RPU_2012")
+library("gdata")
+library("rgrs")
+library("lubridate")
+load("rpu2012.Rda")
+attach(d1)
+source("mes_fonctions.R")
+
+
+\end{document}
