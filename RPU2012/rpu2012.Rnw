@@ -4,7 +4,7 @@
 \usepackage{lmodern}
 \usepackage[utf8]{inputenc}
 \include{rpu-2012.sty}
-\usepackage{numprint}
+%\usepackage{numprint}
 \usepackage{makeidx}
 \makeindex
 \makeglossary
@@ -26,7 +26,8 @@
 \listoffigures
 
 <<setup,echo=FALSE,cache=FALSE,message=FALSE,warning=FALSE>>=
-setwd("~/Documents/Resural/Stat Resural/RPU_2012")
+# setwd("~/Documents/Resural/Stat Resural/RPU_2012")
+setwd("~/rdev/RPU2012")
 library("gdata")
 library("rgrs")
 library("lubridate")
@@ -36,10 +37,11 @@ library("knitr")
 source("mes_fonctions.R")
 @
 
-<<load,echo=FALSE,cache=TRUE>>=
+<<loadSource,echo=FALSE,cache=TRUE>>=
 load("rpu2012.Rda")
 attach(d1)
 @
+
 %\frontmatter
 
 %\mainmatter
@@ -109,7 +111,7 @@ Les calculs sont effectués à partir du fichier xxx de l'INSEE qui recense l'en
 
 \section{Origine des données}
 
-<<echo=FALSE>>=
+<<origine,echo=FALSE>>=
 hop<-c("CH Wissembourg","CH Sélestat","Clinique Ste Odile","Hôpitaux Universitaires de Strasbourg","CH Haguenau","Clinique des 3 frontières","CH Altkirch","CH Colmar","CH Guebwiller")
 @
 

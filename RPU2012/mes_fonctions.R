@@ -1,0 +1,6 @@
+# fonction summaries()
+
+summaries<-function()
+{
+
+}

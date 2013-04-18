@@ -4,7 +4,7 @@
 \usepackage{lmodern}
 \usepackage[utf8]{inputenc}
 \include{rpu-2012.sty}
-\usepackage{numprint}
+%\usepackage{numprint}
 \usepackage{makeidx}
 \makeindex
 \makeglossary
@@ -25,4 +25,79 @@
 \tableofcontents
 \listoftables
 \listoffigures
+
+
+
+%\frontmatter
+
+%\mainmatter
+
+\include{rpu2012Latex/rapport/preambule.tex}
+
+\chapter{La région Alsace}
+\section{Les secteurs sanitaires}
+\section{Les zones de proximité}
+\section{Démographie}
+Les calculs sont effectués à partir du fichier xxx de l'INSEE qui recense l'ensemble de la population par commune et par tranches de un an. La version utilisée est celle du 1er janvier 2010 (tab.\ref{pop}).
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|l|l|r|r|}
+  \hline
+  Tranche d'age & Abréviation & Effectif & Pourcentage \\
+  \hline
+  \hline
+  Moins de 1 an & pop0 & $21903.14$ & 1.19 \\
+  De 1 à 75 ans & pop1\_75 & $1690073.00$ & 92.00 \\
+  Plus de 75 ans& pop75 & $125110.90$ & 6.81 \\
+  \hline
+  Total & pop\_tot & $1837087.00$ & 100.00 \\
+  \hline
+\end{tabular}
+\caption{Population d'Alsace (janvier 2010)}
+\label{pop}
+\end{center}
+\end{table}
+
+\section{Les services d'accueil des urgences (SAU)}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|c|l|}
+  \hline
+& Finess utilisé & Finess géographique & Finess Juridique & Structure \\
+  \hline
+  \hline
+1 & 670780055 &   & 670780055 & HUS \\
+2 & 670780543 & 670000272 & 670780543 & CH Wissembourg \\
+3 & 670000397 & 670000397  & 670780691 & CH Selestat \\
+4 & 670780337 & 670000157 & 670780337 & CH Haguenau \\
+5 &   & 670000165 & 670780345 & CH Saverne \\
+6 & 670016237  & 670016237  & 670016211 & Clinique ste Odile \\
+7 &   & 670780212 & 670014604 & Clinique Ste Anne \\
+8 & 680000973 & 680000684 & 680000973 & CH Colmar \\
+9 & 680000197  & 680000197  & 680000049 & Clinique des trois frontières \\
+10 & 680000486 & 680000544  & 680000395 & CH Altkirch \\
+11 & 680000700 & 680000700 & 680001005 & CH Guebwiller \\
+12 & 680000627 & 680000627 & 680000486 & CH Mulhouse FG \\
+13 &   & 680000601 & 680000437 & CH Thann \\
+14 &   & 680000320  & 680000643 & Diaconat-Fonderie (St Sauveur) \\
+\hline
+\end{tabular}
+\caption{Service d'accueil des urgences d'Alsace}
+\label{summary}
+\end{center}
+\end{table}
+
+%
+% chapitre: les données
+% ---------------------
+%
+\chapter{Les données}
+
+\section{Origine des données}
+
+
+Les données proviennent des RPU produits par les hôpitaux d'Alsace ayant l'autorisation de faire fonctionner un service d'urgence (SU). La liste des structures hospitalières ayant fournit des informations alimentant le présent rapport est fournie par la table \ref{tab1}, page \pageref{tab1}.
+
 
