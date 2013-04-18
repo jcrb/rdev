@@ -1,0 +1,28 @@
+\documentclass[12pt,english,french]{report}
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\include{rpu-2012.sty}
+\usepackage{numprint}
+\usepackage{makeidx}
+\makeindex
+\makeglossary
+
+%
+% Début du document
+% ------------------
+%
+\usepackage{Sweave}
+\begin{document} 
+\input{rpu2012-concordance}
+
+\title{Analyse des données RPU 2012 de la région Alsace}
+\author{RESURAL}
+\date{\today}
+\maketitle
+
+\tableofcontents
+\listoftables
+\listoffigures
+

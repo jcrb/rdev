@@ -36,13 +36,13 @@ checkout un depot (checkout = sortir de, checkin = entrer dans)
 creer une copie de travail du depot local avec la commande git **git clone /path/to/repository**.
 Lorqu´on utilise un serveur distant, la commande devient **git clone username@host:/path/to/repository**.
 
-Organisation du travail (workflow)
+Organisation du travail (workflow = cycle de vie)
 ----------------------------------
 Le depot local est constitue de trois *trees* mis a jour par git. Le premier est estle repertoire de travail (working directory) qui contient les fichiers courants. Le second est l´*index* qui fonctionne comme zone de stockage et enfin le *HEAD* qui pointe sur le dernier commit effectué.
 
 ![alt text](trees.png)
 
-add et commit
+add et commit (ajout et validation)
 -------------
 On peut proposer des modifications (on les *add* a l´ *Index*) en utilisant **git add <filename>** ou **git add* **. C´est la premiere étape du flux de travail. Pour valider cette modification on utilise **git commit -m "Commit message"**. Maintenant le fichier est transféré dans le *HEAD* mais pas encore dans le dépot distant.
 
@@ -84,6 +84,27 @@ Au cas ou l´on fasse une erreur (ce qui bien sur n´arrive jamais) on peut remp
 Ceci remplace les modifications de votre arbre de travail avec le contenu de HEAD. Les modificaions déja ajoutée a l´index, comme les nouveaux fichiers, seront conservés.
 
 Si vous souhaiteez plutot abandonner toutes vos modifications locales et commits, récupérer la derniere version a partir du serveur et pointer sur la branche locale principale: **git fetch origin** er **git reset --hard origin/master**
+
+Utiliser un serveur distant
+---------------------------
+git-clone - Clone a repository into a new directory:
+
+git clone https://github.com/jcrb/Notes.git
+
+Créer un dépot GitHub (ex.Flu_France)
+---------------------
+
+- aller sur gitub: **https://github.com/jcrb**
+- dans l'onglet *Repositories* sélectionner **new**
+- donner un nom au projet: **Repository name** et un mot de description: **Description (optional)**
+- valider
+- github affiche une nouvelle page avec les indications suivantes:
+  - adresse de connexion SSH: git@github.com:jcrb/Flu_France.git
+  - adresse de connexion HTTPS: https://github.com/jcrb/Flu_France.git
+  - pour agir a distance sur le dépot: git remote "ma commande" https://github.com/jcrb/Flu_France.git
+  - Recommande de créer un fichier *license.md*, *readme.md* et *gitignore*
+  - NB: pour supprimer un dépot, renenir a la page de ce dépot et choisir l'onglet **settings**
+  
 
 Trucs utiles
 ------------
