@@ -18,6 +18,7 @@
 %
 \begin{document} 
 \SweaveOpts{concordance=TRUE}
+\SweaveOpts{fig.path='./Graphs/alan-', comment=NA, prompt=FALSE}
 
 \title{Analyse des données RPU 2012 de la région Alsace}
 \author{RESURAL}
@@ -119,7 +120,6 @@ hop<-c("CH Wissembourg","CH Sélestat","Clinique Ste Odile","Hôpitaux Universit
 @
 Les données proviennent des RPU produits par les hôpitaux d'Alsace ayant l'autorisation de faire fonctionner un service d'urgence (SU). La liste des structures hospitalières ayant fournit des informations alimentant le présent rapport est fournie par la table \ref{tab1}, page \pageref{tab1}.
 
-%<<tab1, echo = FALSE, results = 'asis'>>=
 <<tab1, echo = FALSE, results = tex >>=
 a<-table(d1$FINESS)
 b<-round(prop.table(a)*100,digits=2)
@@ -252,7 +252,7 @@ Il existe une légère prédominance masculine. Le sex-ratio est de \Sexpr{sxr}
 
 \begin{figure}
 \begin{center}
-<<age_sexe,fig.width=4,fig.height=5,echo=FALSE>>=
+<<age_sexe,fig.width=4,fig.height=5,echo=FALSE,fig = TRUE>>=
 boxplot(d1$AGE~d1$SEXE,ylab="Age (années)",xlab="Sexe",las=2,col="green")
 @
 \end{center}
@@ -269,7 +269,7 @@ L'age moyen des femmes est légèrement plus élevé que celui des hommes (figur
 \subsection{Gravité (CCMU)\index{gravité} des patients}
 
 La gravité s'évalue à l'aide de la classification clinique des maladies aux urgences (CCMU).
-<<echo=F, results= tex,fig.width=4,fig.height=5,fig.cap='Gravite (CCMU)',fig.show='asis'>>=
+<<gravite1,echo=F, results= tex,fig.width=4,fig.height=5,fig.cap='Gravite (CCMU)',fig = TRUE>>=
 xtable(freq(d1$GRAVITE),caption="Répartition de la gravité (CCMU)",label="ccmu")
 plot(d1$GRAVITE,xlab="CCMU",main="Gravité")
 @
@@ -277,22 +277,8 @@ plot(d1$GRAVITE,xlab="CCMU",main="Gravité")
 % A partir de ce point commencent les annexes %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
-\chapter{Résumé de passage aux urgences (RPU)}
-La composition d'un RPU répond à une norme définie par l'INVS\footnote{Institut National de Veille Sanitaire} dont la dernière version est datée de 2006. Un RPU se compose des éléments suivants:
-\begin{enumerate}
-  \item premier
-\end{enumerate}
-
-\chapter{Documentation interne}
-\begin{enumerate}
-  \item Eurostat: Resural\//Stat Resural\//Eurostat\//eurostat\_readme.Rmd
-  \item INSEE
-  \item Open Street Map (OSM)
-  \item cran-R
-\end{enumerate}
-
-\section{Logiciel R}
-
+\SweaveInput{rpu2012Latex/rapport/annexes.Rnw}
 
 \printindex
+
 \end{document}

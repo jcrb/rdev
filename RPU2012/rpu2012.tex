@@ -20,6 +20,7 @@
 \begin{document} 
 \input{rpu2012-concordance}
 
+
 \title{Analyse des données RPU 2012 de la région Alsace}
 \author{RESURAL}
 \date{\today}
@@ -102,9 +103,8 @@ Les calculs sont effectués à partir du fichier xxx de l'INSEE qui recense l'en
 
 Les données proviennent des RPU produits par les hôpitaux d'Alsace ayant l'autorisation de faire fonctionner un service d'urgence (SU). La liste des structures hospitalières ayant fournit des informations alimentant le présent rapport est fournie par la table \ref{tab1}, page \pageref{tab1}.
 
-%<<tab1, echo = FALSE, results = 'asis'>>=
 % latex table generated in R 2.15.1 by xtable 1.7-1 package
-% Fri Apr 19 13:12:08 2013
+% Fri Apr 19 16:27:38 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{|l|r|r|l|r|}
@@ -132,7 +132,7 @@ Les informations de nature administrative (code postal, commune d'origine, sexe,
 Les données à caractère plus médical comme le motif de consultation ou le diagnostic principal ont une exhaustivité moins bonne, de l'ordre de $70\%$.
 
 % latex table generated in R 2.15.1 by xtable 1.7-1 package
-% Fri Apr 19 13:12:09 2013
+% Fri Apr 19 16:27:39 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{|l|r|}
@@ -221,7 +221,7 @@ Les caractéristiques de la population sont résumées dans la table \ref{summar
 % tranche d'age selon serveur régional
 
 % latex table generated in R 2.15.1 by xtable 1.7-1 package
-% Fri Apr 19 13:12:09 2013
+% Fri Apr 19 16:27:39 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -258,6 +258,7 @@ Il existe une légère prédominance masculine. Le sex-ratio est de 0.92 %
 
 \begin{figure}
 \begin{center}
+\includegraphics{rpu2012-age_sexe}
 \end{center}
 \caption{Répartition de l'age en fonction du sexe}
 \label{age:sexe}
@@ -273,7 +274,7 @@ L'age moyen des femmes est légèrement plus élevé que celui des hommes (figur
 
 La gravité s'évalue à l'aide de la classification clinique des maladies aux urgences (CCMU).
 % latex table generated in R 2.15.1 by xtable 1.7-1 package
-% Fri Apr 19 13:12:09 2013
+% Fri Apr 19 16:27:40 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -292,10 +293,12 @@ La gravité s'évalue à l'aide de la classification clinique des maladies aux u
 \end{tabular}
 \caption{Répartition de la gravité (CCMU)} 
 \label{ccmu}
-\end{table}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{table}\includegraphics{rpu2012-gravite1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A partir de ce point commencent les annexes %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
+
 \chapter{Résumé de passage aux urgences (RPU)}
 La composition d'un RPU répond à une norme définie par l'INVS\footnote{Institut National de Veille Sanitaire} dont la dernière version est datée de 2006. Un RPU se compose des éléments suivants:
 \begin{enumerate}
@@ -311,7 +314,13 @@ La composition d'un RPU répond à une norme définie par l'INVS\footnote{Instit
 \end{enumerate}
 
 \section{Logiciel R}
-
+R est un langage de programmation et un environnement mathématique utilisés pour le traitement de données et l'analyse statistique. C'est un projet GNU fondé sur le langage S et sur l'environnement développé dans les laboratoires Bell par John Chambers et ses collègues. 
+\
+R est un logiciel libre distribué selon les termes de la licence GNU GPL et est disponible sous GNU/Linux, FreeBSD, NetBSD, OpenBSD, Mac OS X et Windows. R s'interface directement avec la pluspart des bases de données courantes: BO (Oracle), MySQL, PostgreeSql, etc. Il s'interface aussi avec un certain nombre de système d'information géographique (SIG) et sait lire nativement le format Shapefile utilisé par l'IGN.
+\
+Le logiciel R est interfacé avec le traitement de texte Latex par l'intermédiaire de la bibliothèque Sweave. Cette association permet de mélanger du texte et des formules mathématiques produisant les résultats et graphiques de ce document. En cas de modification des données, il suffit de recompiler le fichier source pour mettre à jour le document final.
+\
 
 \printindex
+
 \end{document}
