@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>RPU 2012 - Read me first</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+</head>
+
+<body>
+<h1>RPU 2012 - Read me first</h1>
+
+<p>Le type de document utilisé est <em>Rapport</em>. Il comporte:</p>
+
+<ul>
+<li>un corps de texte</li>
+<li>des annexes</li>
+<li>une table des figures</li>
+<li>une table des tableaux</li>
+<li>un glossaire</li>
+<li>un index</li>
+<li>une table des matières</li>
+</ul>
+
+<h2>Spécificités de Latex</h2>
+
+<p><strong>package{numprint}</strong>: imprime les nombres avec un séparateur de milliers. Nécessite d&#39;installer latex supplementary packages de Texlive (librairie ubuntu). Doc <a href="http://mirrors.ctan.org/macros/latex/contrib/numprint/numprint.pdf">http://mirrors.ctan.org/macros/latex/contrib/numprint/numprint.pdf</a></p>
+
+<p><strong>Erreur dans match.arg(options$results, c(&ldquo;verbatim&rdquo;, &ldquo;tex&rdquo;, &ldquo;hide&rdquo;))</strong> : &#39;arg&#39; should be one of “verbatim”, “tex”, “hide”</p>
+
+<p>Cette erreur est apparue à Momtreal ligne 119 avec le chunk tab1. Il semble que results = &#39;asis&#39; ne soit pas supporté pat toutes les versions. Remplacé par results = tex fonctionne (noter l&#39;absence de guillemets, sinon erreur)</p>
+
+<h2>Spécificité de RStudio</h2>
+
+<p><strong>Shiny</strong> pour faire des pages html interactives àpartir de R. Voir doc dans <em><a href="http://www.rstudio.com/shiny">www.rstudio.com/shiny</a></em>.</p>
+
+<p>Pour installer shiny sur ubuntu: <a href="https://github.com/rstudio/shiny-server/wiki/Ubuntu-step-by-step-install-instructions">https://github.com/rstudio/shiny-server/wiki/Ubuntu-step-by-step-install-instructions</a></p>
+
+<p>Site de shiny: <a href="https://github.com/rstudio/shiny-server">https://github.com/rstudio/shiny-server</a></p>
+
+<p>Tutorial officiel: <a href="http://www.rstudio.com/shiny/">http://www.rstudio.com/shiny/</a> et <a href="http://rstudio.github.io/shiny/tutorial/">http://rstudio.github.io/shiny/tutorial/</a></p>
+
+<h1>Détails de la structure</h1>
+
+<h2>le corps de texte</h2>
+
+<ul>
+<li>taille 12</li>
+</ul>
+
+<h2>les annexes</h2>
+
+<p>pour créer une nouvelle annexe, ouvrir un <em>chapter</em> APRES la marque \appendix</p>
+
+<h2>Table des figures et des tableaux</h2>
+
+<p>Pour qu&#39;une figure apparaisse dans la liste des figures, elle doit comporter l&#39;option <em>\caption{légende de la figure}</em>.
+Por qu&#39;une figure puisse être référencée, elle doit comporter l&#39;option <em>\label{mon_label}</em>. On peut alors insérer un renvoi vers la figure dans le corps de texte en utilisant <em>\Ref{mon_label}</em> et <em>\pageref{mon_label}</em>.
+Attention: pour un référencement correct, il faut que loption <em>caption</em> précède l&#39;option <em>label</em>.</p>
+
+<p>\begin{table}
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+  \hline
+   \emph{Age} &amp; Min &amp; Max &amp; Moyenne &amp; Médiane \
+    \hline
+    \hline
+    Hommes &amp; \( \Sexpr{b[1]} \) &amp; \Sexpr{b[6]} &amp; \( \Sexpr{b[4]} \) &amp; \Sexpr{b[3]} \
+    \hline
+    Femmes &amp; \Sexpr{c[1]} &amp; \Sexpr{c[6]} &amp; \Sexpr{c[4]} &amp; \Sexpr{c[3]} \
+    \hline
+    \emph{total} &amp; \Sexpr{a[1]} &amp; \Sexpr{a[6]} &amp; \Sexpr{a[4]} &amp; \Sexpr{a[3]} \
+  \hline
+\end{tabular}
+\caption{Age de l&#39;ensemble des patients}
+\label{summary}
+\end{center}
+\end{table}</p>
+
+<p>Les caractéristiques de la population sont résumées dans la table \Ref{summary}, page \pageref{summary}.</p>
+
+<h2>Utilisation de <strong>xtable</strong></h2>
+
+<p>ex. gravité (CCMU)</p>
+
+<p>&lt;<echo=F, results='asis',fig.width=4,fig.height=5,fig.cap='Gravite (CCMU)',fig.show='asis'>&gt;=</p>
+
+<p>xtable(freq(d1$GRAVITE),caption=&ldquo;Répartition de la gravité (CCMU)&rdquo;,label=&ldquo;ccmu&rdquo;)</p>
+
+<p>plot(d1$GRAVITE,xlab=&ldquo;CCMU&rdquo;,main=&ldquo;Gravité&rdquo;)</p>
+
+<p>@</p>
+
+<ul>
+<li>fig.caption permet de faire apparaitre la ligne dans la liste des figures</li>
+<li>caption = &ldquo;&rdquo; permet de donner une légennde au tableau</li>
+<li>label = &ldquo;&rdquo; permet de faire référence au tableau avec \ref et \pageref</li>
+</ul>
+
+<h2>Glossaire</h2>
+
+<p>Pour créer une nouvelle entrée faire <em>\glossary{mon_terme}</em>. Assez compliqué: voir la manière de procéder pp 226 dans Lozano.</p>
+
+<h2>Index</h2>
+
+<p>Pour figurer dans l&#39;index un mot doit être suivi par <em>index{mot}</em></p>
+
+</body>
+
+</html>
+

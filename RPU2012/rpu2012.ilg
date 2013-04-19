@@ -1,4 +1,6 @@
 This is makeindex, version 2.15 [TeX Live 2012] (kpathsea + Thai support).
-Scanning input file rpu2012.idx...done (0 entries accepted, 0 rejected).
-Nothing written in rpu2012.ind.
+Scanning input file rpu2012.idx....done (3 entries accepted, 0 rejected).
+Sorting entries....done (5 comparisons).
+Generating output file rpu2012.ind....done (13 lines written, 0 warnings).
+Output written in rpu2012.ind.
 Transcript written in rpu2012.ilg.
