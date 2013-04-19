@@ -1,0 +1,31 @@
+Doc Montreal
+========================================================
+
+Open Data
+---------
+http://www.data.gouv.fr/content/search?SortBy=Pertinence&SortOrder=0&SearchText=cat%C3%A9gorie+majeur+de+diagnostic
+
+LES CATÉGORIES MAJEURES DE DIAGNOSTIC PAR ÉTABLISSEMENT DE SANTÉ 2009, 2010, 2011
+
+Utiliser Git
+------------
+http://try.github.io/levels/1/challenges/1
+
+Hébergement de code
+-------------------
+https://www.cloud66.com/
+
+Cloud 66 is the application Platform which enables developers to deploy, manage and scale their applications on their own private servers or public cloud.
+
+https://www.appfog.com/pricing/
+
+Simple PaaS for Java, Node, .Net, Ruby, PHP, MySQL, Mongo, PostgreSQL, and more. Freedom to move between IaaS at will with the easiest pricing in the ...
+
+https://www.engineyard.com/
+
+Engine Yard is the leading cloud platform for Ruby on Rails and PHP. Trust Engine Yard's automation, service and expertise to build, deploy and run your ...
+
+https://www.heroku.com/
+
+Agile deployment for Ruby, Node.js, Clojure, Java, Python, and Scala. Heroku is the leading open language cloud application platform and supports Ruby, Java, Python, Clojure, Scala, Node.js. and custom language buildpacks.
+

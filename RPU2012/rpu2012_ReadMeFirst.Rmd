@@ -10,6 +10,20 @@ Le type de document utilisé est *Rapport*. Il comporte:
 - un index
 - une table des matières
 
+Spécificités de Latex
+---------------------
+**package{numprint}**: imprime les nombres avec un séparateur de milliers. Nécessite d'installer latex supplementary packages de Texlive (librairie ubuntu). Doc http://mirrors.ctan.org/macros/latex/contrib/numprint/numprint.pdf
+
+Spécificité de RStudio
+----------------------
+**Shiny** pour faire des pages html interactives àpartir de R. Voir doc dans *www.rstudio.com/shiny*.
+
+Pour installer shiny sur ubuntu: https://github.com/rstudio/shiny-server/wiki/Ubuntu-step-by-step-install-instructions
+
+Site de shiny: https://github.com/rstudio/shiny-server
+
+Tutorial officiel: http://www.rstudio.com/shiny/ et http://rstudio.github.io/shiny/tutorial/
+
 Détails de la structure
 =======================
 le corps de texte
