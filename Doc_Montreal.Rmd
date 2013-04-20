@@ -29,3 +29,84 @@ https://www.heroku.com/
 
 Agile deployment for Ruby, Node.js, Clojure, Java, Python, and Scala. Heroku is the leading open language cloud application platform and supports Ruby, Java, Python, Clojure, Scala, Node.js. and custom language buildpacks.
 
+RPU 2012
+=========
+La version précédente, la conversion au format Date de l'entrée et de la sortie d'un patient entraine la perte du groupe horaire. Cette versin part du fichier *RPU__.csv* qui est une copie de la base de donnée Sagec. Les données sont retravaillées sauf les dates d'entrée et de sortie qui sont conservées au format txt. Le fichier original comporte des données de 201 et 2013 qui sont éliminées pour ne comserver que 2012. Le nouveau fichier est enregistré sous *rpu2012_3.txt* et *rpu2012.Rda*. L'ancien fichier rpu2012.Rda est sauvegardé sous *rpu2012_old.Rda*.
+
+setwd("/home/bart/Bureau/Stat Resural/RPU_2012")
+d1<-read.csv("RPU__.csv",header=TRUE,sep=",")
+View(`d1`)
+d1<-d1[,-16]
+attach(d1)
+a<-FINESS
+a[a=="670780543"]<-"670000272" # Wissembourg
+a[a=="680000973"]<-"680000684" # Colmar
+b<-c(670000272,670000397,670016237,670780055,670780337,670780543,680000197,680000486,680000684,680000700,680000973)
+c<-as.character(b)
+# on supprime les finess juridiques
+c<-c[c(-6,-11)]
+d<-c("Wis","Sel","Odi","Hus","Hag","3Fr","Alk","Col","Geb")
+b<-factor(a,levels=c,labels=d)
+d1$FINESS<-b
+rm(b)
+rm(a)
+# Transformation en facteur:
+d1$CODE_POSTAL<-as.factor(CODE_POSTAL)
+d1$COMMUNE<-as.factor(COMMUNE)
+d1$SEXE<-as.factor(SEXE)
+d1$TRANSPORT<-as.factor(TRANSPORT)
+d1$TRANSPORT_PEC<-as.factor(TRANSPORT_PEC)
+d1$GRAVITE<-as.factor(GRAVITE)
+d1$ORIENTATION<-as.factor(ORIENTATION)
+# Transformation en DATE:
+d1$NAISSANCE<-as.Date(NAISSANCE)
+# Création de facteurs
+d1$MODE_ENTREE<-factor(MODE_ENTREE,levels=c(0,6,7,8),labels=c('NA','Mutation','Transfert','Domicile'))
+d1$PROVENANCE<-factor(PROVENANCE,levels=c(0,1,2,3,4,5,8),labels=c('NA','MCO','SSR','SLD','PSY','PEA','PEO'))
+d1$MODE_SORTIE<-factor(MODE_SORTIE,levels=c(0,6,7,8,4),labels=c('NA','Mutation','Transfert','Domicile','Décès'))
+d1$DESTINATION<-factor(DESTINATION,levels=c(0,1,2,3,4,6,7),labels=c('NA','MCO','SSR','SLD','PSY','HAD','HMS'))
+# Création d'une variable AGE: on forme une var temporaire a qui stocke la date d'entrée au format Date
+a<-as.Date(ENTREE)
+d1$AGE<-floor(as.numeric(a-d1$NAISSANCE)/365)
+
+# Le fichier source contient des données de 2011 et 2013. Ilfaut le nettoyer (nécessite la librairie lubridate):
+d1<-d1[ymd_hms(ENTREE) < ymd_hms("2013-01-01 00:00:00") & ymd_hms(ENTREE) > ymd_hms("2011-12-31 23:59:59"),]
+# vérification:
+summary(ymd_hms(d1$ENTREE))
+
+# Sauvegarde des données
+write.table(d1,"rpu2012_3.txt",sep=',',quote=TRUE,na="NA")
+save(d1,file="rpu2012.Rda")
+
+# load("rpu2012.Rda")
+
+# temps de présence (en secondes, transformées en mn)
+
+e<-ymd_hms(d1$ENTREE)
+s<-ymd_hms(d1$SORTIE, quiet=TRUE)
+p<-s-e
+p<-as.numeric(p/60)
+summary(p)
+p2<-p[p>0]
+summary(p2)
+quantile(p2,probs=c(0.1,0.5,0.9,0.99),na.rm=TRUE)
+p5<-length(p[p>7200 & !p==NA]) # présent plus de 5 jours
+pt<-length(p2[p2!=NA]) # tous les présents
+round(p5*100/pt,2) # % de patients restés plus de 5 jours
+# liste des Finess ou il manque l'heure de sortie:
+a<-data.frame(d1[is.na(ymd_hms(d1$SORTIE)),"FINESS"])
+summary(a)
+# liste des Finess ou il manque l'heure d'entrée:
+a<-data.frame(d1[is.na(ymd_hms(d1$ENTREE)),"FINESS"])
+summary(a)
+
+# les hus comptent systématiquement 24h de présence. Qui s'occuppe des RPU aux HUS ?
+# il y a 12746 NA pour 35889 RPU (36%)
+hus<-d1[d1$FINESS=="Hus",]
+nrow(hus)
+e<-ymd_hms(hus$ENTREE)
+s<-ymd_hms(hus$SORTIE, quiet=TRUE)
+p<-s-e
+p<-as.numeric(p/60)
+summary(p)
+quantile(p,probs=c(0.1,0.5,0.9,0.99),na.rm=TRUE)
