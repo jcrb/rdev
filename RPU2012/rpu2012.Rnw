@@ -120,10 +120,10 @@ hop<-c("CH Wissembourg","CH Sélestat","Clinique Ste Odile","Hôpitaux Universit
 @
 Les données proviennent des RPU produits par les hôpitaux d'Alsace ayant l'autorisation de faire fonctionner un service d'urgence (SU). La liste des structures hospitalières ayant fournit des informations alimentant le présent rapport est fournie par la table \ref{tab1}, page \pageref{tab1}.
 
-<<tab1, echo = FALSE, results = tex >>=
+<<tab1, echo=FALSE, results=tex >>=
 a<-table(d1$FINESS)
 b<-round(prop.table(a)*100,digits=2)
-d<-tapply(d1$ENTREE,d1$FINESS,min)
+d<-tapply(as.Date(d1$ENTREE),d1$FINESS,min)
 d<-as.Date(d,origin="1970-01-01")
 d<-format(d,"%d/%m/%Y")               
 c<-cbind(a,b,hop,d)
@@ -273,6 +273,48 @@ La gravité s'évalue à l'aide de la classification clinique des maladies aux u
 xtable(freq(d1$GRAVITE),caption="Répartition de la gravité (CCMU)",label="ccmu")
 plot(d1$GRAVITE,xlab="CCMU",main="Gravité")
 @
+
+%
+% Temps de passage
+%----------------
+%
+\subsection{Durée de passage\index{Temps} de passage}
+
+La durée de passage est le temps séparant la date d'entrée de celle de sortie. Les temps sont calculés en secondes puis convertis en minutes. Les durée négatives sont liées à une date de sortie manquante. Dans les RPU 2012 il ne manque aucune date d'entrée mais de nombreuses dates de sortie sont manquantes ou erronées (ex. date de sortie = date d'entrée + 24 heures).
+<<>>=
+e<-ymd_hms(d1$ENTREE, quiet=TRUE)
+s<-ymd_hms(d1$SORTIE, quiet=TRUE)
+p<-s-e
+p<-as.numeric(p/60)
+summary(p)
+
+p2<-p[p>0]
+summary(p2)
+quantile(p2,probs=c(0.1,0.5,0.9,0.99),na.rm=TRUE)
+p5<-length(p[p>7200 & !p==NA]) # présent plus de 5 jours
+pt<-length(p2[p2!=NA]) # tous les présents
+round(p5*100/pt,2) # % de patients restés plus de 5 jours
+
+# liste des Finess ou il manque l'heure de sortie:
+a<-data.frame(d1[is.na(ymd_hms(d1$SORTIE)),"FINESS"])
+summary(a)
+# liste des Finess ou il manque l'heure d'entrée:
+a<-data.frame(d1[is.na(ymd_hms(d1$ENTREE)),"FINESS"])
+summary(a)
+
+# les hus comptent systématiquement 24h de présence. Qui s'occuppe des RPU aux HUS ?
+# il y a 12746 NA pour 35889 RPU (36%)
+hus<-d1[d1$FINESS=="Hus",]
+nrow(hus)
+e<-ymd_hms(hus$ENTREE)
+s<-ymd_hms(hus$SORTIE, quiet=TRUE)
+p<-s-e
+p<-as.numeric(p/60)
+summary(p)
+quantile(p,probs=c(0.1,0.5,0.9,0.99),na.rm=TRUE)
+@
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A partir de ce point commencent les annexes %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -104,7 +104,7 @@ Les calculs sont effectués à partir du fichier xxx de l'INSEE qui recense l'en
 Les données proviennent des RPU produits par les hôpitaux d'Alsace ayant l'autorisation de faire fonctionner un service d'urgence (SU). La liste des structures hospitalières ayant fournit des informations alimentant le présent rapport est fournie par la table \ref{tab1}, page \pageref{tab1}.
 
 % latex table generated in R 2.15.1 by xtable 1.7-1 package
-% Fri Apr 19 16:27:38 2013
+% Sun Apr 21 08:43:33 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{|l|r|r|l|r|}
@@ -132,7 +132,7 @@ Les informations de nature administrative (code postal, commune d'origine, sexe,
 Les données à caractère plus médical comme le motif de consultation ou le diagnostic principal ont une exhaustivité moins bonne, de l'ordre de $70\%$.
 
 % latex table generated in R 2.15.1 by xtable 1.7-1 package
-% Fri Apr 19 16:27:39 2013
+% Sun Apr 21 08:43:34 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{|l|r|}
@@ -142,22 +142,22 @@ Les données à caractère plus médical comme le motif de consultation ou le di
 id & 0.00 \\ 
   CODE\_POSTAL & 0.00 \\ 
   COMMUNE & 0.00 \\ 
+  DP & 0.00 \\ 
   ENTREE & 0.00 \\ 
   EXTRACT & 0.00 \\ 
   FINESS & 0.00 \\ 
-  NAISSANCE & 0.00 \\ 
+  GRAVITE & 0.00 \\ 
+  MOTIF & 0.00 \\ 
+  ORIENTATION & 0.00 \\ 
   SEXE & 0.00 \\ 
-  AGE & 0.00 \\ 
+  SORTIE & 0.00 \\ 
+  TRANSPORT & 0.00 \\ 
+  TRANSPORT\_PEC & 0.00 \\ 
+  NAISSANCE & 0.03 \\ 
+  AGE & 0.03 \\ 
   MODE\_ENTREE & 3.57 \\ 
-  SORTIE & 9.66 \\ 
-  GRAVITE & 14.92 \\ 
   MODE\_SORTIE & 15.08 \\ 
-  DP & 23.76 \\ 
-  TRANSPORT & 27.09 \\ 
-  TRANSPORT\_PEC & 29.96 \\ 
-  PROVENANCE & 32.75 \\ 
-  MOTIF & 34.06 \\ 
-  ORIENTATION & 71.36 \\ 
+  PROVENANCE & 32.78 \\ 
   DESTINATION & 72.51 \\ 
    \hline
 \end{tabular}
@@ -198,11 +198,11 @@ Le fichier comporte \numprint{142376} RPU.
    \emph{Age} & Min & Max & Moyenne & Médiane \\
     \hline
     \hline
-    Hommes & $0$ & 105 & $41.72$ & 40 \\
+    Hommes & $0$ & 129 & $41.72$ & 40 \\
     \hline
     Femmes & 0 & 105 & 46.93 & 45 \\
     \hline
-    \emph{total} & 0 & 105 & 44.21 & 42 \\
+    \emph{total} & 0 & 129 & 44.21 & 42 \\
   \hline
 \end{tabular}
 \caption{Age de l'ensemble des patients}
@@ -221,16 +221,16 @@ Les caractéristiques de la population sont résumées dans la table \ref{summar
 % tranche d'age selon serveur régional
 
 % latex table generated in R 2.15.1 by xtable 1.7-1 package
-% Fri Apr 19 16:27:39 2013
+% Sun Apr 21 08:43:34 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
   \hline
  & effectif & pourcentage \\ 
   \hline
-moins de 1 an & 1736 & 1.22 \\ 
-  de 1 à 75 ans & 116932 & 82.13 \\ 
-  plus de 75 ans & 23712 & 16.65 \\ 
+moins de 1 an & 1769 & 1.24 \\ 
+  de 1 à 75 ans & 116936 & 82.09 \\ 
+  plus de 75 ans & 23743 & 16.67 \\ 
    \hline
 \end{tabular}
 \caption{Structure d'age de la population des urgences} 
@@ -243,16 +243,16 @@ moins de 1 an & 1736 & 1.22 \\
 %
 
 \subsection{Sexe\index{sexe} des patients}
-Il existe une légère prédominance masculine. Le sex-ratio est de 0.92 %
+Il existe une légère prédominance masculine. Le sex-ratio est de 0 %
 
 
 \begin{tabular}{|l|c|c|c|c|}
   \hline
    \emph{Sexe} & $n$ & $\%$ \\
    \hline
-   Hommes & \numprint{74269} & \numprint{52.16} \\
-   Femmes & \numprint{68106} & \numprint{47.84}\\
-   NP & \numprint{1} & \numprint{0}\\
+   Hommes & \numprint{68089} & \numprint{47.82} \\
+   Femmes & \numprint{31} & \numprint{0.02}\\
+   NP & \numprint{3} & \numprint{0}\\
   \hline
 \end{tabular}
 
@@ -274,7 +274,7 @@ L'age moyen des femmes est légèrement plus élevé que celui des hommes (figur
 
 La gravité s'évalue à l'aide de la classification clinique des maladies aux urgences (CCMU).
 % latex table generated in R 2.15.1 by xtable 1.7-1 package
-% Fri Apr 19 16:27:40 2013
+% Sun Apr 21 08:43:34 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -287,13 +287,117 @@ La gravité s'évalue à l'aide de la classification clinique des maladies aux u
   4 & 1619.00 & 1.10 \\ 
   5 & 390.00 & 0.30 \\ 
   D & 9.00 & 0.00 \\ 
+  NULL & 21242.00 & 14.90 \\ 
   P & 1325.00 & 0.90 \\ 
-  NA & 21242.00 & 14.90 \\ 
+  NA & 0.00 & 0.00 \\ 
    \hline
 \end{tabular}
 \caption{Répartition de la gravité (CCMU)} 
 \label{ccmu}
 \end{table}\includegraphics{rpu2012-gravite1}
+
+%
+% Temps de passage
+%----------------
+%
+\subsection{Durée de passage\index{Temps} de passage}
+
+La durée de passage est le temps séparant la date d'entrée de celle de sortie. Les temps sont calculés en secondes puis convertis en minutes. Les durée négatives sont liées à une date de sortie manquante. Dans les RPU 2012 il ne manque aucune date d'entrée mais de nombreuses dates de sortie sont manquantes ou erronées (ex. date de sortie = date d'entrée + 24 heures).
+\begin{Schunk}
+\begin{Sinput}
+> e<-ymd_hms(d1$ENTREE, quiet=TRUE)
+> s<-ymd_hms(d1$SORTIE, quiet=TRUE)
+> p<-s-e
+> p<-as.numeric(p/60)
+> summary(p)
+\end{Sinput}
+\begin{Soutput}
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+-1144.0    38.0    93.0   140.1   181.0  8798.0   13791 
+\end{Soutput}
+\begin{Sinput}
+> p2<-p[p>0]
+> summary(p2)
+\end{Sinput}
+\begin{Soutput}
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+    1.0    38.0    93.0   140.4   181.0  8798.0   13791 
+\end{Soutput}
+\begin{Sinput}
+> quantile(p2,probs=c(0.1,0.5,0.9,0.99),na.rm=TRUE)
+\end{Sinput}
+\begin{Soutput}
+10% 50% 90% 99% 
+  1  93 306 899 
+\end{Soutput}
+\begin{Sinput}
+> p5<-length(p[p>7200 & !p==NA]) # présent plus de 5 jours
+> pt<-length(p2[p2!=NA]) # tous les présents
+> round(p5*100/pt,2) # % de patients restés plus de 5 jours
+\end{Sinput}
+\begin{Soutput}
+[1] 9.69
+\end{Soutput}
+\begin{Sinput}
+> # liste des Finess ou il manque l'heure de sortie:
+> a<-data.frame(d1[is.na(ymd_hms(d1$SORTIE)),"FINESS"])
+> summary(a)
+\end{Sinput}
+\begin{Soutput}
+ d1.is.na.ymd_hms.d1.SORTIE.....FINESS..
+ Hus    :12746                          
+ Sel    :  724                          
+ Col    :  275                          
+ Hag    :   32                          
+ Alk    :   14                          
+ Wis    :    0                          
+ (Other):    0                          
+\end{Soutput}
+\begin{Sinput}
+> # liste des Finess ou il manque l'heure d'entrée:
+> a<-data.frame(d1[is.na(ymd_hms(d1$ENTREE)),"FINESS"])
+> summary(a)
+\end{Sinput}
+\begin{Soutput}
+ d1.is.na.ymd_hms.d1.ENTREE.....FINESS..
+ Wis    :0                              
+ Sel    :0                              
+ Odi    :0                              
+ Hus    :0                              
+ Hag    :0                              
+ 3Fr    :0                              
+ (Other):0                              
+\end{Soutput}
+\begin{Sinput}
+> # les hus comptent systématiquement 24h de présence. Qui s'occuppe des RPU aux HUS ?
+> # il y a 12746 NA pour 35889 RPU (36%)
+> hus<-d1[d1$FINESS=="Hus",]
+> nrow(hus)
+\end{Sinput}
+\begin{Soutput}
+[1] 35889
+\end{Soutput}
+\begin{Sinput}
+> e<-ymd_hms(hus$ENTREE)
+> s<-ymd_hms(hus$SORTIE, quiet=TRUE)
+> p<-s-e
+> p<-as.numeric(p/60)
+> summary(p)
+\end{Sinput}
+\begin{Soutput}
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+-1144.0     1.0     1.0    77.7     1.0  3149.0   12746 
+\end{Soutput}
+\begin{Sinput}
+> quantile(p,probs=c(0.1,0.5,0.9,0.99),na.rm=TRUE)
+\end{Sinput}
+\begin{Soutput}
+ 10%  50%  90%  99% 
+   1    1  189 1440 
+\end{Soutput}
+\end{Schunk}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A partir de ce point commencent les annexes %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
