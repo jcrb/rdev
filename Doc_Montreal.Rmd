@@ -33,6 +33,10 @@ Javascript - CSS
 -----------------
 www.knacss.com de Alsacreations
 
+xtables
+-------
+http://www1.appstate.edu/~arnholta/TeX/Sweave/TablesKnitr.rnw
+
 git bootstrap
 
 RPU 2012
