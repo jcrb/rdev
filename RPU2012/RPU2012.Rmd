@@ -8,6 +8,10 @@ Pour que les légendes de l'axe des X soient perpendiculaires a ce dernier, rajo
 Pour que les légendes soient perpendiculaires aux 2 axes, rajouter *las = 3*
 Par défaut *las = 0*
 
+L'utilisation de la méthode *SweaveInput* provoque un erreur si le fichier à inclure comporte des caractères accenués (même enregistrés en UTF8)
+
+Création d'un tableau avec *cbind* et une matrice (et xtable pour pdf): voir exhaustivité des données
+
 Initialisation
 ==============
 Définir le working directory:
@@ -27,7 +31,11 @@ Packages nécessaires
 --------------------
 gdata est utile pour la méthode drop.levels() qui supprime les levels inutiles:
 (ref: http://rwiki.sciviews.org/doku.php?id=tips:data-manip:drop_unused_levels)
-```{r}
+
+note: pour supprimer les messages inutiles *{r message=FALSE}*
+
+note: pour supprimer les warnings: *{r warning=FALSE}*
+```{r message=FALSE}
 library("gdata")
 library("rgrs")
 library("lubridate")
@@ -43,7 +51,7 @@ detach(d1)
 attach(d1)
 
 Chargement des routines perso
-=============================
+-----------------------------
 ```{r}
 source("mes_fonctions.R")
 ```
@@ -67,18 +75,61 @@ round(prop.table(a)*100,digits=2)
 ```
 ### Origine temporelle des données:
 ```{r}
-b<-tapply(d1$ENTREE,d1$FINESS,min)
-as.Date(b,origin="1970-01-01")
+b<-tapply(as.Date(d1$ENTREE),d1$FINESS,min)
+c<-as.Date(b,origin="1970-01-01")
+cbind(as.character(sort(c)))
 ```
 
 
 Exhaustivité des données
 ------------------------
+Il faut tranformer les valeurs NULL en NA pour pouvoir les comptabiliser. Les valeurs NULL apparaissent pour les factors: DP, MOTIF, TRANSPORT, ORIENTATION,GRAVITE, SORTIE. Il faut les transformer en charecter pour leur attriber la valeur NA au lieu de NULL:
+```{r}
+a<-as.character(d1$DP)
+a[a=="NULL"]<-NA
+sum(is.na(a))
+mean(is.na(a))
+```
+sum(is.na(a)) retourne le nombre de lignes concernées et *mean(is.na(a))* donne directement le pourcentage de valeurs nulles (R in action pp 356)
+```{r}
+d1$DP<-a
+
+a<-as.character(d1$MOTIF)
+a[a=="NULL"]<-NA
+d1$MOTIF<-a
+
+a<-as.character(d1$TRANSPORT)
+a[a=="NULL"]<-NA
+d1$TRANSPORT<-a
+
+a<-as.character(d1$ORIENTATION)
+a[a=="NULL"]<-NA
+d1$ORIENTATION<-a
+
+a<-as.character(d1$GRAVITE)
+a[a=="NULL"]<-NA
+d1$GRAVITE<-a
+
+a<-as.character(d1$SORTIE)
+a[a=="NULL"]<-NA
+d1$SORTIE<-a
+
+a<-as.character(d1$ENTREE)
+a[a=="NULL"]<-NA
+d1$ENTREE<-a
+```
+
 ```{r}
 a<-is.na(d1)
 b<-apply(a,2,mean)
-round(b,digits=2)
+a<-cbind(sort(round(b*100,2)))
+colnames(a)<-"%"
+a
 ```
+# xtable(a)
+
+orientation -> données erronées
+
 
 Analyse univariée
 =================
@@ -87,10 +138,30 @@ Sexe
 ```{r}
 print(summary(d1$SEXE))
 ```
+Dossiers où la variable SEXE a une valeur aberrante:
+```{r}
+a<-d1[d1$SEXE != "F" & d1$SEXE != "M", ]
+nrow(a)
+```
+Finess concernés:
+```{r}
+a[,"FINESS"]
+```
+Note: toutes les valeurs qui ne sont ni F ou M sont transformées en NA. Puis on applique une astuce qui consiste à réappliquer *factor* au vecteur (nb: d1$SEXE est du type factor). On peut aussi utiliser *drop.levels()* from the gdata package. Source: http://www.r-bloggers.com/r-drop-factor-levels-in-a-dataset
+```{r}
+a<-d1$SEXE
+summary(a)
+a[a != "F" & a != "M"]<-NA
+a<-factor(a)
+summary(a)
+boxplot(d1$AGE~a, col="yellow")
+d1$SEXE<-a
+```
+
 sexratio:
 ```{r}
 t<-table(d1$SEXE)
-print(paste(round(t[1]/t[3],digits=2),"%"))
+print(paste(round(t["M"]/t["F"],digits=2),"%"))
 ```
 Age
 ---
@@ -106,10 +177,45 @@ t<-data.frame(effectif,pourcentage,row.names=c("moins de 1 an","de 1 à 75 ans",
 ```
 Gravité
 -------
-```{r}
+```{r gravite}
 table(d1$GRAVITE,useNA="ifany")
 freq(d1$GRAVITE)
 plot(table(d1$GRAVITE,useNA="ifany"),xlab="Gravité (CCMU)",ylab="Effectifs",main="CCMU")
+```
+### gravité et sexe
+en valeur absolue:
+```{r gravite&sexe}
+t<-table(d1$GRAVITE,d1$SEXE)
+round(prop.table(t)*100,3)
+```
+en pourcentage:
+```{r}
+addmargins(t)
+round(addmargins(prop.table(t)*100),3)
+```
+
+### gravité et age
+Moyenne et ecart-type:
+```{r}
+round(tapply(d1$AGE,d1$GRAVITE,mean,na.rm=TRUE),2)
+round(tapply(d1$AGE,d1$GRAVITE,sd,na.rm=TRUE),2)
+boxplot(d1$AGE~d1$GRAVITE,xlab="Gravité (CCMU)",ylab="Age (années)",main="CCMU et Age",col="green")
+```
+
+### gravité et Finess
+```{r}
+t<-table(d1$FINESS,d1$GRAVITE)
+t
+a<-round(prop.table(t)*100,3)
+a
+barplot(a[,1],main="Pourcentage de CCMU 1 selon le SU",xlab="Service d'urgence",ylab="CCMU 1 (en % de l'ensemble des CCMU)")
+barplot(a[,2],main="Pourcentage de CCMU 2 selon le SU",xlab="Service d'urgence",ylab="CCMU 2 (en % de l'ensemble des CCMU)")
+barplot(a[,3],main="Pourcentage de CCMU 3 selon le SU",xlab="Service d'urgence",ylab="CCMU 3 (en % de l'ensemble des CCMU)")
+barplot(a[,4],main="Pourcentage de CCMU 4 selon le SU",xlab="Service d'urgence",ylab="CCMU 4 (en % de l'ensemble des CCMU)")
+barplot(a[,5],main="Pourcentage de CCMU 5 selon le SU",xlab="Service d'urgence",ylab="CCMU 5 (en % de l'ensemble des CCMU)")
+barplot(a[,6],main="Pourcentage de CCMU D selon le SU",xlab="Service d'urgence",ylab="CCMU D (en % de l'ensemble des CCMU)")
+barplot(a[,7],main="Pourcentage de CCMU P selon le SU",xlab="Service d'urgence",ylab="CCMU P (en % de l'ensemble des CCMU)")
+round(addmargins(prop.table(t)*100),3)
 ```
 
 
@@ -145,31 +251,70 @@ plot(table(d1$MODE_SORTIE,useNA="ifany"),xlab="Mode de sortie",ylab="Effectifs",
 ```
 Orientation
 -----------
+La rubrique *ORIENTATION* comprte un certain nombre d'éléments aberrants qui perturbent son interprétation comme facteur. Dans un premier temps, on ne retient que les valeurs comportant moins de dix caractères, puis on transforme la rubrique en facteur:
 ```{r}
-table(d1$ORIENTATION,useNA="ifany")
-freq(d1$ORIENTATION)
-plot(table(d1$ORIENTATION,useNA="ifany"),xlab="Orientation",ylab="Effectifs",main="")
+b<-d1$ORIENTATION[nchar(d1$ORIENTATION)<10]
+d1$ORIENTATION<-as.factor(b)
 ```
+Il reste encore quelques intitulés anormaux: M, F, REO?
+
+On suppose également que les NA correspondent aux patients non hospitalisés. On crée un dataframe des patients hospitalisés après leur passage aux urgences
+```{r}
+a<-b[!is.na(b)]
+```
+nombre de patients hospitalisés:
+```{r}
+length(a)
+```
+Taux d'hospitalisation:
+```{r}
+round(length(a)*100/nrow(d1),2)
+```
+
+Transformation en facteur et analyse:
+```{r}
+hospit<-factor(a)
+hospit[hospit=="M" | a=="F"]<-NA # on supprime M et F
+summary(hospit)
+f<-freq(hospit,sort="inc",digits=2)
+f
+t<-table(hospit)
+sort(t)
+barplot(sort(t,decreasing=TRUE),main="Orientation des patients hospitalisés")
+```
+TODO:
+
+- créer une colonne supplémentaire dans D1 pour marquer ceux qui sont hospitalisé de ceux qui ne le sont pas
+- caractéristiques (age, sexe, CCMU) des hospitalisés versus les non hospialisés
+- y a t'il des hopitaux qui hospitalisent plus que d'autres ?
+
 Provenance
 ----------
 ```{r}
 table(d1$PROVENANCE,useNA="ifany")
 freq(d1$PROVENANCE)
-plot(table(d1$PROVENANCE,useNA="ifany"),xlab="Provenance",ylab="Effectifs",main="")
+barplot(sort(table(d1$PROVENANCE,useNA="ifany"),decreasing=TRUE),xlab="Provenance",ylab="Effectifs",main="")
 ```
 Transport
 ---------
 ```{r}
 table(d1$TRANSPORT,useNA="ifany")
 freq(d1$TRANSPORT)
-plot(table(d1$TRANSPORT,useNA="ifany"),xlab="Mode de transport",ylab="Effectifs",main="")
+barplot(sort(table(d1$TRANSPORT,useNA="ifany"),decreasing=TRUE),xlab="Mode de transport",ylab="Effectifs",main="")
 ```
 Prise en charge
 ---------------
+Note: *freq* nécessite *rgrs*. Réalise le tri à plat d'une variable. Permet aussi d'afficher le % cumulé, d'exclure certaines variables du tri, d'afficher l'effectif total et de préciser le nombre de chiffres significatifs.
 ```{r}
 table(d1$TRANSPORT_PEC,useNA="ifany")
-freq(d1$TRANSPORT_PEC)
-plot(table(d1$TRANSPORT_PEC,useNA="ifany"),xlab="Prise en charge pendant le transport",ylab="Effectifs",main="")
+f<-freq(d1$TRANSPORT_PEC,sort="inc",exclude=c(NA,''),total=TRUE)
+f
+barplot(f[1:nrow(f)-1,1])
+row.names(f)
+barplot(f[1:nrow(f),1],names.arg=row.names(f))
+
+t<-table(d1$TRANSPORT_PEC)
+barplot(sort(t,decreasing=TRUE),xlab="Prise en charge pendant le transport",ylab="Effectifs",main="")
 ```
 
 
@@ -192,6 +337,12 @@ Les HUS ont une patientèle plus agée que la moyenne:
 boxplot(d1$AGE~d1$FINESS,xlab="Etablissement",ylab="Age (années)") 
 round(tapply(d1$AGE,d1$FINESS,mean,na.rm=TRUE),2)
 ```
+Pour rendre le graphique plus parlant, on réorganise les boxplots pour qu'ils soient affichés par moyenne d'age croissante. D'abord on réorganise les FINESS avec la fonction *reorder* qui demande trois paramètres: le variable factor à reorganiser (finess), la variable qui servira de supoort à la réorganisation (age) et la fonction de tri (mean). S'agissant de la moyenne ne pas oublier na.rm=TRUE pour éviter un affichage aberrant. Puis on affiche les boxplots par ordre de moyenne d'age croissant. 
+```{r warning=FALSE}
+a<-with(d1,reorder(FINESS,AGE,mean,na.rm=TRUE))
+boxplot(AGE~a,data=d1,xlab="Etablissement",ylab="Age (années)",col="orange")
+```
+
 Age et établissement
 --------------------
 ```{r}

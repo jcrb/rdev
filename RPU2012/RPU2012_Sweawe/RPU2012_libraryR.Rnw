@@ -1,0 +1,12 @@
+<<setup,echo=FALSE,cache=FALSE,message=FALSE,warning=FALSE>>=
+# setwd("~/Documents/Resural/Stat Resural/RPU_2012")
+#setwd("~/rdev/RPU2012")
+
+library("gdata")
+library("rgrs")
+library("lubridate")
+library("xtable")
+library("stargazer")
+library("knitr")
+#source("mes_fonctions.R")
+@

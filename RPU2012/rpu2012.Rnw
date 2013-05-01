@@ -163,6 +163,16 @@ nb<-nrow(d1)
 Le fichier comporte \numprint{\Sexpr{nb}} RPU.
 
 %
+% Sexe
+%
+\subsection{Sexe\index{Sexe} des patients}
+<<sexe,echo=FALSE>>=
+t<-table(d1$SEXE)
+sr<-round(t["M"]/t["F"],digits=2)
+@
+Il existe une légère prédominance masculine. Le sex-ratio est de \numprint{\Sexpr{sr}} \%.
+
+%
 % AGE
 % ------
 %
@@ -267,6 +277,7 @@ L'age moyen des femmes est légèrement plus élevé que celui des hommes (figur
 %----------------
 %
 \subsection{Gravité (CCMU)\index{gravité} des patients}
+
 
 La gravité s'évalue à l'aide de la classification clinique des maladies aux urgences (CCMU).
 <<gravite1,echo=F, results= tex,fig.width=4,fig.height=5,fig.cap='Gravite (CCMU)',fig = TRUE>>=
