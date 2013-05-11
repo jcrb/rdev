@@ -1,5 +1,9 @@
 Analyse des RPU 2012 (version linux)
 ========================================================
+```{r}
+date()
+```
+source: RPU2012GIT/RPU2012
 
 Ce document exploite le fichier RData préparé à partir de la table RPU__ de Sagec. Voir le document *RPU2012_Prepa.Rmd* du sossier Resural.
 
@@ -16,7 +20,7 @@ Initialisation
 ==============
 Définir le working directory:
 ```{r}
-setwd("~/Documents/Resural/Stat Resural/RPU_2012")
+setwd("~/Documents/Resural/Stat Resural/RPU2012GIT/RPU2012")
 ```
 Mise à jour:
 ```{r}
@@ -39,16 +43,20 @@ note: pour supprimer les warnings: *{r warning=FALSE}*
 library("gdata")
 library("rgrs")
 library("lubridate")
+library("epicalc")
 ```
 
 Lecture du fichier des données
 ---------------------------------------
 On lit le fichier de travail créé:
 ```{r-Lecture fichier}
+getwd()
+# Détache et supprime tous les objets et données de l'environnement global:
+zap()
 load("rpu2012.Rda")
-```
-detach(d1)
 attach(d1)
+use(d1)
+```
 
 Chargement des routines perso
 -----------------------------
@@ -65,10 +73,14 @@ print(n)
 print(names(d1))
 str(d1)
 summary(d1)
+
+des()
+summ()
 ```
 Stuctures hospitalières participantes
 =====================================
 ```{r}
+unique(FINESS)
 summary(d1$FINESS)
 a<-table(d1$FINESS)
 round(prop.table(a)*100,digits=2)
@@ -180,7 +192,7 @@ Gravité
 ```{r gravite}
 table(d1$GRAVITE,useNA="ifany")
 freq(d1$GRAVITE)
-plot(table(d1$GRAVITE,useNA="ifany"),xlab="Gravité (CCMU)",ylab="Effectifs",main="CCMU")
+barplot(table(d1$GRAVITE,useNA="ifany"),xlab="Gravité (CCMU)",ylab="Effectifs",main="CCMU")
 ```
 ### gravité et sexe
 en valeur absolue:
@@ -224,7 +236,7 @@ Destination
 ```{r}
 table(d1$DESTINATION,useNA="ifany")
 freq(d1$DESTINATION)
-plot(table(d1$DESTINATION,useNA="ifany"),xlab="Services",ylab="Effectifs",main="Orientation des patients")
+barplot(table(d1$DESTINATION,useNA="ifany"),xlab="Services",ylab="Effectifs",main="Orientation des patients")
 ```
 FINESS
 ------
@@ -233,32 +245,34 @@ t<-table(d1$FINESS,useNA="ifany")
 t
 round(prop.table(t)*100,2)
 freq(d1$FINESS)
-plot(table(d1$FINESS,useNA="ifany"),xlab="Etablissements",ylab="Effectifs",main="Etablissements sièges de SU")
+barplot(table(d1$FINESS,useNA="ifany"),xlab="Etablissements",ylab="Effectifs",main="Etablissements sièges de SU")
 ```
 Mode d'entrée
 -------------
 ```{r}
 table(d1$MODE_ENTREE,useNA="ifany")
 freq(d1$MODE_ENTREE)
-plot(table(d1$MODE_ENTREE,useNA="ifany"),xlab="Mode d'entée",ylab="Effectifs",main="")
+barplot(table(d1$MODE_ENTREE,useNA="ifany"),xlab="Mode d'entée",ylab="Effectifs",main="")
 ```
 Mode de sortie
 --------------
 ```{r}
 table(d1$MODE_SORTIE,useNA="ifany")
 freq(d1$MODE_SORTIE)
-plot(table(d1$MODE_SORTIE,useNA="ifany"),xlab="Mode de sortie",ylab="Effectifs",main="")
+barplot(table(d1$MODE_SORTIE,useNA="ifany"),xlab="Mode de sortie",ylab="Effectifs",main="")
 ```
 Orientation
 -----------
-La rubrique *ORIENTATION* comprte un certain nombre d'éléments aberrants qui perturbent son interprétation comme facteur. Dans un premier temps, on ne retient que les valeurs comportant moins de dix caractères, puis on transforme la rubrique en facteur:
+La rubrique *ORIENTATION* comporte un certain nombre d'éléments aberrants qui perturbent son interprétation comme facteur. Dans un premier temps, on ne retient que les valeurs comportant moins de dix caractères, puis on transforme la rubrique en facteur:
 ```{r}
 b<-d1$ORIENTATION[nchar(d1$ORIENTATION)<10]
 d1$ORIENTATION<-as.factor(b)
 ```
+La ligne précédente génére une erreur car *b* comporte moins de lignes que *d1* puisqu'on a retiré les éléments comportants plus de 10 caractères.
+
 Il reste encore quelques intitulés anormaux: M, F, REO?
 
-On suppose également que les NA correspondent aux patients non hospitalisés. On crée un dataframe des patients hospitalisés après leur passage aux urgences
+On suppose également que les *NA* correspondent aux patients non hospitalisés. On crée un dataframe des patients hospitalisés après leur passage aux urgences
 ```{r}
 a<-b[!is.na(b)]
 ```
@@ -274,13 +288,24 @@ round(length(a)*100/nrow(d1),2)
 Transformation en facteur et analyse:
 ```{r}
 hospit<-factor(a)
-hospit[hospit=="M" | a=="F"]<-NA # on supprime M et F
+hospit[hospit=="M" | hospit=="F"]<-NA # on supprime M et F
 summary(hospit)
 f<-freq(hospit,sort="inc",digits=2)
 f
 t<-table(hospit)
 sort(t)
 barplot(sort(t,decreasing=TRUE),main="Orientation des patients hospitalisés")
+```
+on forme deux nouveaux dataframe qui ne prennent pas en compte les lignes anormales et ne retiennent que les patients hospitalisés (*hop*) ou non hospitalisés (*nonhop*):
+```{r}
+hop<-d1[nchar(d1$ORIENTATION)<10,-1]
+hop$ORIENTATION<-as.factor(hop$ORIENTATION)
+hop$GRAVITE<-as.factor(hop$GRAVITE)
+nonhop<-hop[is.na(hop$ORIENTATION),]
+hop<-hop[!is.na(hop$ORIENTATION),]
+
+summary(nonhop$GRAVITE)
+summary(hop$GRAVITE)
 ```
 TODO:
 
@@ -362,7 +387,7 @@ Gavité et établissement: les fréquences sont exprimées en pourcentage. La so
 addmargins(round(prop.table(a,margin=1)*100,digit=2),margin=2)
 ```
 Avec code de couleur:
-```{r}
+```{r warning=FALSE}
 plot(d1$FINESS~d1$GRAVITE,ylab="Etablissement",xlab="Gravité (CCMU)",col=terrain.colors(n=9))
 ```
 Même calcul en supprimant Hag et Alk dont la contribution est négligeable:
@@ -373,3 +398,104 @@ d2$FINESS<-drop.levels(d2$FINESS)
 summary(d2$FINESS)
 plot(d2$FINESS~d2$GRAVITE,ylab="Etablissement",xlab="Gravité (CCMU)",col=terrain.colors(n=7))
 ```
+
+Gestion du temps
+================
+Répartition par mois
+--------------------
+Pas interprétable compte tenu de la montée en puissance progressive en 2012
+```{r mois}
+m<-month(d1$ENTREE,label=TRUE)
+table(m)
+m<-month(d1$ENTREE)
+hist(m,xlab="Mois",col="red")
+```
+
+Répartition par jour de la semaine
+----------------------------------
+```{r semaine}
+ w<-wday(d1$ENTREE,label=TRUE)
+table(w)
+round( prop.table(table(w))*100,2)
+hist(as.numeric(w))
+```
+
+
+Répartition par heure de la journée
+-----------------------------------
+```{r jour_heure}
+h<-hour(d1$ENTREE)
+hist(h,breaks=24,xlab="Heure de la journée",main="Répartition des arrivées dans la journée")
+```
+Transformation des factor en heure
+----------------------------------
+```{r heure}
+e<-ymd_hms(as.character(d1$ENTREE))
+s<-ymd_hms(as.character(SORTIE))
+d<-s-e
+dmin<-d/60
+summary(as.numeric(dmin))
+dmin<-as.numeric(d/60)
+a<-dmin[dmin < 0]
+length(a)
+a<-dmin[dmin > 0]
+length(a)
+summary(a)
+b<-dmin[dmin > 1440]
+length(b)
+```
+Recodage du temps de présence à partir de dmin. Si dmin <=0 c'est que l'heure de sortie est inconnue. Au dela de 5 jours, le séjour est classé *HL* (hors limites)
+```{r}
+d1$sejour[dmin <= 0]<-NA
+d1$sejour[dmin >0 & dmin<=1440 & !is.na(dmin)]<-"H24"
+d1$sejour[dmin >1440 & dmin<=2880]<-"H48"
+d1$sejour[dmin >2880 & dmin<=4320]<-"H72"
+d1$sejour[dmin >4320 & dmin<=5760]<-"H96"
+d1$sejour[dmin >5760 & dmin<=7200]<-"H120"
+d1$sejour[dmin >7200]<-"HL"
+d1$sejour<-factor(d1$sejour,order=TRUE,levels=c("H24","H48","H72","H96","H120","HL"))
+levels(d1$sejour)
+summary(d1$sejour)
+t<-table(d1$sejour)
+round(prop.table(t)*100,3)
+```
+Création d'une nouvelle variable *time* qui mesure le temps de présence en minute (SORTIE - ENTREE)
+```{r}
+d1$time<-dmin
+```
+Séjours de 24 heures
+```{r}
+s24 <-d1[d1$sejour=="H24" & !is.na(d1$sejour),]
+nrow(s24)
+t<-tapply(s24$time,s24$FINESS,summary)
+t
+boxplot(t)
+```
+cas particulier des HUS. Nombre de dossier Hus où la durée de séjour est de moins de 24 heures:
+```{r}
+nt<-length(s24$time[s24$FINESS=="Hus"])
+nt
+```
+nombre de dossiers où la durée de séjour est de 1 minute:
+```{r}
+n1<-length(s24$time[s24$FINESS=="Hus" & s24$time==1])
+n1
+round(n1*100/nt,2)
+```
+nombre de dossiers où la durée de séjour est inférieure à 30 minutes:
+```{r}
+n30<-length(s24$time[s24$FINESS=="Hus" & s24$time<30])
+n30
+round(n30*100/nt,2)
+```
+Séjours de 24 heures renseignés:
+```{r}
+length(s24$time[s24$FINESS=="Hus" & s24$time>30])
+a<-s24[s24$FINESS=="Hus" & s24$time>30,]
+summary(a$time)
+summary(a)
+```
+
+
+
+
