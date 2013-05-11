@@ -5,6 +5,8 @@ date()
 ```
 source: RPU2012GIT/RPU2012
 
+GIT: jcrb & Vendenheim1
+
 Ce document exploite le fichier RData préparé à partir de la table RPU__ de Sagec. Voir le document *RPU2012_Prepa.Rmd* du sossier Resural.
 
 Pour que les légendes de l'axe des Y soient perpendiculaires a ce dernier, rajouter *las = 1*
@@ -494,6 +496,32 @@ length(s24$time[s24$FINESS=="Hus" & s24$time>30])
 a<-s24[s24$FINESS=="Hus" & s24$time>30,]
 summary(a$time)
 summary(a)
+```
+
+Analyse du code postal
+======================
+Patients non originaire de l'Alsace:
+```{r}
+a<-d1[as.character(d1$CODE_POSTAL)<"67000" | as.character(d1$CODE_POSTAL)>"68999",]
+nrow(a)
+```
+dans quel hôpitaux:
+```{r}
+summary(a$FINESS)
+```
+dont non français:
+```{r}
+length(a$CODE_POSTAL[as.character(a$CODE_POSTAL)=="99999"])
+length(a$CODE_POSTAL[as.character(a$CODE_POSTAL)>"99000"])
+b<-unique(a$CODE_POSTAL[as.character(a$CODE_POSTAL)>"99000"])
+length(b)
+b<-unique(a$COMMUNE[as.character(a$CODE_POSTAL)>"99000"])
+sort(b)
+```
+commune de France hors Alsace:
+```{r}
+b<-unique(a$COMMUNE[as.character(a$CODE_POSTAL)<"67000" | as.character(a$CODE_POSTAL)>"68999" & as.character(a$CODE_POSTAL)<"99000"])
+length(b)
 ```
 
 
