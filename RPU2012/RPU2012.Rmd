@@ -411,6 +411,7 @@ m<-month(d1$ENTREE,label=TRUE)
 table(m)
 m<-month(d1$ENTREE)
 hist(m,xlab="Mois",col="red")
+plot(m,xlab="Selon le mois",col="red")
 ```
 
 Répartition par jour de la semaine
@@ -420,6 +421,7 @@ Répartition par jour de la semaine
 table(w)
 round( prop.table(table(w))*100,2)
 hist(as.numeric(w))
+plot(w,main="Selon le jour de la semaine")
 ```
 
 
@@ -523,6 +525,196 @@ commune de France hors Alsace:
 b<-unique(a$COMMUNE[as.character(a$CODE_POSTAL)<"67000" | as.character(a$CODE_POSTAL)>"68999" & as.character(a$CODE_POSTAL)<"99000"])
 length(b)
 ```
+Par département:
+```{r}
+ cp<-unique(a$CODE_POSTAL[as.character(a$CODE_POSTAL)<"67000" | as.character(a$CODE_POSTAL)>"68999" & as.character(a$CODE_POSTAL)<"99000"])
+dep<-substr(cp,1,2)
+n<-unique(dep)
+sort(n)
+summary(as.factor(dep))
+hist(as.integer(dep),breaks=99,xlab="Départements",ylab="Nombre",main="Origine des patients (hors Alsace)",col="lightgray")
+
+tab1(as.integer(dep),horiz=TRUE,bar.values=FALSE,xlab="Départements",ylab="Nombre",main="Origine des patients (hors Alsace)",col="lightgray")
+
+tab1(as.integer(dep),horiz=TRUE,bar.values=FALSE,sort.group="decreasing",xlab="Départements",ylab="Nombre",main="Origine des patients (hors Alsace)",col="lightgray")
+
+```
+Motifs
+======
+% de motifs renseignés
+```{r}
+b<-d1$MOTIF
+nb<-length(b)
+nb
+c<-b[as.character(b) != "NULL"]
+nc<-length(c)
+nc
+round(nc*100/nb,2)
+```
+nombre d'items différents:
+```{r}
+a<-unique(c)
+length(a)
+```
+
+Diagnostic principal
+====================
+dp = diagnostic principal, ndp = nomdre de dp, dpr = dp renseignés, ndpr = nombre de dpr
+Les nomenclatures CIM10 ne sont pas homogènes. Ainsi on peut trouver I60.9 ou I609. La méthode
+*gsub(".","",a,fixed=TRUE)* permet d'éliminer le point.
+
+```{r}
+dp<-d1$DP
+ndp<-length(dp)
+dpr<-dp[as.character(dp) != "NULL"]
+ndpr<-length(dpr)
+round(ndpr*100/ndp,2)
+```
+nombre de DP différents:
+```{r}
+a<-unique(dpr)
+length(a)
+```
+```{r}
+a<-substr(dpr,1,1)
+n<-unique(a)
+tab1(a,horiz=TRUE,sort.group="decreasing")
+```
+Etude AVC
+----------
+Les AVC sont définis par la nomenclature *I60* à *I64*, *G45* Accidents ischémiques cérébraux transitoires (sauf G45.4 amnésie transitoire) et syndromes apparentés et *G46* Syndromes vasculaires cérébraux au cours de maladies cérébrovasculaires
+
+La prévention et la prise en charge des accidents vasculaires cérébraux - Annexes -
+juin 2009
+
+Annexe : Liste exhaustive des codes CIM-10 d’AVC
+
+- G450 Syndrome vertébro-basilaire
+- G451 Syndrome carotidien (hémisphérique)
+- G452 Accident ischémique transitoire de territoires artériels précérébraux multipleset bilatéraux
+- G453 Amaurose fugace
+- G454 Amnésie globale transitoire : NON RETENU
+- G458 Autres accidents ischémiques cérébraux transitoires et syndromes apparentés
+- G459 Accident ischémique cérébral transitoire, sans précision
+- I600 Hémorragie sous-arachnoïdienne de labifurcation et du siphon carotidien
+- I601 Hémorragie sous-arachnoïdienne de l'artère cérébrale moyenne
+- I602 Hémorragie sous-arachnoïdienne de
+- l'artère communicante antérieure
+- I603 Hémorragie sous-arachnoïdienne del'artère communicante postérieure
+- I604 Hémorragie sous-arachnoïdienne de l'artère basilaire
+- I605 Hémorragie sous-arachnoïdienne de l'artère vertébrale
+- I606 Hémorragie sous-arachnoïdienne d'autres artères intracrâniennes
+- I607 Hémorragie sous-arachnoïdienne d'une ar
+tère intracrânienne, sans précision
+- I608 Autres hémorragies sous-arachnoïdiennes
+- I609 Hémorragie sous-arachnoïdienne, sans précision
+- I610 Hémorragie intracérébrale hémisphérique, sous-corticale
+- I611 Hémorragie intracérébrale hémisphérique, corticale
+- I612 Hémorragie intracérébrale hémisphérique, non précisée
+- I613 Hémorragie intracérébrale du tronc cérébral
+- I614 Hémorragie intracérébrale cérébelleuse
+- I615 Hémorragie intracérébrale intraventriculaire
+- I616 Hémorragie intracérébrale,localisations multiples
+- I618 Autres hémorragies intracérébrales
+- I619 Hémorragie intracérébrale, sans précision
+- I620 Hémorragie sous-durale (aiguë) (non traumatique)
+- I621 Hémorragie extradurale non traumatique
+- I629 Hémorragie intracrânienne (non traumatique), sans précision
+- I630 Infarctus cérébral dû à une thrombose des artères précérébrales
+- I631 Infarctus cérébral dû à une embolie des artères précérébrales
+- I632 Infarctus cérébral dû à une occlusion ou sténose des artères précérébrales,de mécanisme non précisé
+- I633 Infarctus cérébral dû à une thrombose des artères cérébrales
+- I634 Infarctus cérébral dû à une embolie des artères cérébrales
+- I635 Infarctus cérébral dû à une occlusion ou sténose des artères cérébrales, demécanisme non précisé
+- I636 Infarctus cérébral dû à une thrombose veineuse cérébrale, non pyogène
+- I638 Autres infarctus cérébraux
+- I639 Infarctus cérébral, sans précision
+- I64 Accident vasculaire cérébral, non précisé comme étant hémorragique ou parinfarctus
+- G460 Syndrome de l'artère cérébrale moyenne (I66.0) (1)
+- G461 Syndrome de l'artère cérébrale antérieure (I66.1) (1)
+- G462 Syndrome de l'artère cérébrale postérieure (I66.2) (1)
+- G463 Syndromes vasculaires du tronc cérébral (I60-I67) (1)
+- G464 Syndrome cérébelleux vasculaire (I60-I67) (1)
+- G465 Syndrome lacunaire moteur pur (I60-I67) (1)
+- G466 Syndrome lacunaire sensitif pur (I60-I67) (1)
+- G467 Autres syndromes lacunaires (I60-I67) (1)
+- G468 Autres syndromes vasculaires cérébraux au cours de maladies cérébrovasculaires (I60-I67) (1)
+(1) : résumé à ne retenir que si présence d’un diagnostic associé significatif (DAS) des catégories I60 à I64
+```{r avc}
+avc<-dpr[substr(dpr,1,3)>="I60" & substr(dpr,1,3)<"I65" | substr(dpr,1,3)=="G46"]
+navc<-unique(avc)
+a<-as.character(avc)
+a<-gsub(".","",a,fixed=TRUE)
+tab1(a,horiz=TRUE,sort.group="decreasing",main="AVC aux urgences (hors filière UNV",missing=FALSE)
+
+avc_ait<-dpr[substr(dpr,1,3)>="I60" & substr(dpr,1,3)<"I65" | substr(dpr,1,3)=="G46" | substr(dpr,1,3)=="G45"]
+```
+###on crée un dataframe avec 10 colonnes:
+```{r}
+CIM10<-d1[as.character(d1$DP)!= "NULL",c("DP","CODE_POSTAL","ENTREE","FINESS","GRAVITE","ORIENTATION","MODE_SORTIE","AGE","SEXE","TRANSPORT")]
+```
+On corrige DP en supprimmant les points et les plus:
+```{r}
+CIM10$DP<-gsub(".","",as.character(CIM10$DP),fixed=TRUE)
+CIM10$DP<-gsub("+","",as.character(CIM10$DP),fixed=TRUE)
+```
+
+Création d'un dataframe AVC:
+```{r}
+CIM10$DP<-as.character(CIM10$DP)
+AVC<-CIM10[substr(CIM10$DP,1,3)>="I60" & substr(CIM10$DP,1,3)<"I65" | substr(CIM10$DP,1,3)=="G46" | substr(CIM10$DP,1,3)=="G45" ,]
+```
+
+Heures AVC
+```{r}
+h<-hour(AVC$ENTREE)
+hist(h,breaks=24,xlab="Heure de la journée",main="Répartition des AVC dans la journée")
+tab1(h,missing=FALSE)
+```
+
+Jour de la semaine:
+```{r}
+w<-wday(AVC$ENTREE,label=TRUE)
+table(w)
+round( prop.table(table(w))*100,2)
+plot(w,main="AVC selon le jour de la semaine")
+```
+
+
+Etude AIT
+---------
+Recommandations pour la sélection des données PMSI MCO concernant l’AVC (Juin 2009)
+- G450 Syndrome vertébro-basilaire
+- G451 Syndrome carotidien (hémisphérique)
+- G452 Accident ischémique transitoire de territoires artériels précérébraux multiples et bilatéraux
+- G453  Amaurose fugace
+- G458  Autres accidents ischémiques cérébraux transitoires et syndromes apparentés
+- G459  Accident ischémique cérébral transitoire, sans précision	
+```{r ait}
+ait<-CIM10$DP[substr(CIM10$DP,1,3)=="G45" & substr(CIM10$DP,1,4)!="G454"]
+tab1(ait,missing=FALSE)
+```
+Age et AVC
+----------
+```{r avc_age}
+summary(AVC$AGE)
+```
+Le rapport de 2009 donne age moyen = 70.5 et age médian = 75 ans.
+
+Sexe et AVC
+-----------
+```{r avc_sexe}
+a<-factor(AVC$SEXE)
+summary(a)
+hist(AVC$AGE,main="Répartition des AVC",col="pink",xlab="Age en années")
+t<-table(AVC$AGE)
+barplot(t)
+t<-table(a,AVC$AGE)
+barplot(t,col=c("darkblue","red"),legend=TRUE)
+barplot(t,col=c("yellow","red"),legend=TRUE,beside=TRUE)
+```
+
+
 
 
 
